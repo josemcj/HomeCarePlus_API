@@ -1,2 +1,4 @@
-# Home Care Plus con Mongo Atlas
-API REST con Express y Mongo Atlas.
+# Home Care Plus con MongoDB
+API REST con Express y MongoDB.
+
+Por ahora solo cuenta con registro y autenticación de usuarios.
