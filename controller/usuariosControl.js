@@ -54,4 +54,4 @@ const addUsuario = (req, res) => {
 
 module.exports = {
     addUsuario
-};
+}
