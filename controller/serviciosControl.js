@@ -1,6 +1,7 @@
 const { Servicios } = require('../models/servicios');
 const usuarioModelo = require('../models/usuarios');
 
+// Registrar servicio
 const addServicio = async (req, res) => {
     // Crear servicio
     const servicio = new Servicios(req.body);
@@ -35,4 +36,67 @@ const addServicio = async (req, res) => {
     await prestador.save();
 }
 
-module.exports = { addServicio }
+// Listar todos los servicios existentes
+const getServicios = async (req, res) => {
+    await Servicios.find({})
+        .then(datos => {
+
+            // Validar que existan servicios
+            if (datos.length) {
+                res.status(200).json({
+                    code: 200,
+                    datos: datos
+                });
+            } else {
+                res.status(404).json({
+                    code: 404,
+                    message: 'No hay servicios publicados'
+                });
+            }
+            
+        })
+        .catch(err => {
+            res.status(500).json({
+                code: 500,
+                message: 'Ha ocurrido un error'
+            });
+        })
+}
+
+// Obtener info de un servicio
+const getServicio = async (req, res) => {
+    const servicio = await Servicios.findById(req.params.id).exec();
+    const prestador = await usuarioModelo.findById(servicio.prestadorDeServicio).exec();
+
+    res.status(200).json({
+        code: 200,
+        servicio: servicio,
+        prestador: prestador
+    });
+}
+
+// Listar servicio de un usuario (para seccion "Mis servicios")
+const getServiciosDePrestador = async (req, res) => {
+    // Buscar al usuario y poblar el arreglo de servicios del prestador
+    const prestador = await usuarioModelo.findById(req.params.idPrestador).populate('serviciosPublicados');
+
+    // Validar que el aarreglo no este vacio, es decir, que haya servicios publicados
+    if (prestador.serviciosPublicados.length) {
+        res.status(200).json({
+            code: 200,
+            datos: prestador.serviciosPublicados
+        });
+    } else {
+        res.status(404).json({
+            code: 404,
+            message: 'No tienes servicios publicados'
+        });
+    }   
+}
+
+module.exports = {
+    addServicio,
+    getServicios,
+    getServicio,
+    getServiciosDePrestador
+}
