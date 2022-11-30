@@ -52,6 +52,10 @@ const prestadorSchema = new Schema({
             type: String,
             required: true
         }
+    },
+    servicios: {
+        type: Schema.ObjectId,
+        ref: 'Servicios'
     }
 });
 
