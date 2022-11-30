@@ -1,6 +1,9 @@
 # Variables de entorno
 *.env
 
+# Notas
+*.txt
+
 # Logs
 logs
 *.log
