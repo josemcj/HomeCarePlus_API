@@ -1,13 +1,13 @@
-const { Servicios } = require('../models/servicios');
-const usuarioModelo = require('../models/usuarios');
+const { ServiciosModelo } = require('../models/servicios');
+const { UsuariosModelo } = require('../models/usuarios');
 
 // Registrar servicio
 const addServicio = async (req, res) => {
     // Crear servicio
-    const servicio = new Servicios(req.body);
+    const servicio = new ServiciosModelo(req.body);
 
     // Buscar prestador para asignar al servicio
-    const prestador = await usuarioModelo.findById(req.params.idPrestador);
+    const prestador = await UsuariosModelo.findById(req.params.idPrestador);
 
     // Asignar el campo prestadorDeServicio de acuerdo al resultado en prestador
     servicio.prestadorDeServicio = prestador;
@@ -38,7 +38,7 @@ const addServicio = async (req, res) => {
 
 // Listar todos los servicios existentes
 const getServicios = async (req, res) => {
-    await Servicios.find({})
+    await ServiciosModelo.find({})
         .then(datos => {
 
             // Validar que existan servicios
@@ -65,8 +65,8 @@ const getServicios = async (req, res) => {
 
 // Obtener info de un servicio
 const getServicio = async (req, res) => {
-    const servicio = await Servicios.findById(req.params.id).exec();
-    const prestador = await usuarioModelo.findById(servicio.prestadorDeServicio).exec();
+    const servicio = await ServiciosModelo.findById(req.params.id).exec();
+    const prestador = await UsuariosModelo.findById(servicio.prestadorDeServicio).exec();
 
     res.status(200).json({
         code: 200,
@@ -78,7 +78,7 @@ const getServicio = async (req, res) => {
 // Listar servicio de un usuario (para seccion "Mis servicios")
 const getServiciosDePrestador = async (req, res) => {
     // Buscar al usuario y poblar el arreglo de servicios del prestador
-    const prestador = await usuarioModelo.findById(req.params.idPrestador).populate('serviciosPublicados');
+    const prestador = await UsuariosModelo.findById(req.params.idPrestador).populate('serviciosPublicados');
 
     // Validar que el aarreglo no este vacio, es decir, que haya servicios publicados
     if (prestador.serviciosPublicados.length) {

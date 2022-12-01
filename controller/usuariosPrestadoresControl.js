@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const { PrestadorDeServicios } = require('../models/usuarioPrestador');
-// const { Servicios } = require('../models/servicios');
+// const { ServiciosModelo } = require('../models/servicios');
 
 /**
  * PRESTADORES DE SERVICIOS

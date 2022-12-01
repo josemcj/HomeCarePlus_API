@@ -55,7 +55,7 @@ const prestadorSchema = new Schema({
     },
     servicios: {
         type: Schema.ObjectId,
-        ref: 'Servicios'
+        ref: 'ServiciosModelo'
     }
 });
 

@@ -21,10 +21,10 @@ const servicioSchema = new Schema({
     },
     prestadorDeServicio: {
         type: Schema.ObjectId,
-        ref: 'PrestadoresDeServicios'
+        ref: 'Usuarios'
     }
 });
 
-const Servicios = mongoose.model('Servicios', servicioSchema);
+const ServiciosModelo = mongoose.model('Servicios', servicioSchema);
 
-module.exports = { Servicios };
+module.exports = { ServiciosModelo };

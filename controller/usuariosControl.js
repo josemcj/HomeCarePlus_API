@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const usuarioModelo = require('../models/usuarios');
+const { UsuariosModelo } = require('../models/usuarios');
 
 /**
  * Usuarios
@@ -10,7 +10,7 @@ const addUsuario = (req, res) => {
     bcrypt.hash(req.body.contrasena, 10, (err, hash) => {
         if (!err) {
 
-            const usuario = new usuarioModelo({
+            const usuario = new UsuariosModelo({
                 nombre: req.body.nombre,
                 email: req.body.email,
                 contrasena: hash,
