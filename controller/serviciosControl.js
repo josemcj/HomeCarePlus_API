@@ -1,5 +1,5 @@
 const { ServiciosModelo } = require('../models/servicios');
-const { UsuariosModelo } = require('../models/usuarios');
+const UsuariosModelo = require('../models/usuarios');
 
 // Registrar servicio
 const addServicio = async (req, res) => {

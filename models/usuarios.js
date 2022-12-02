@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const opciones = { discriminatorKey: 'tipoUsuario', collection: 'usuarios' };
 
-const usuarioSchema = new Schema({
+const usuarioBase = new Schema({
     nombre: {
         type: String,
         required: true
@@ -22,7 +23,6 @@ const usuarioSchema = new Schema({
         type: Number,
         required: true
     },
-    profesion: String,
     direccion: {
         calle: {
             type: String,
@@ -48,21 +48,9 @@ const usuarioSchema = new Schema({
             type: String,
             required: true
         }
-    },
-    serviciosPublicados: [
-        {
-            type: Schema.ObjectId,
-            ref: 'Servicios'
-        }
-    ],   
-    serviciosContratados: [
-        {
-            type: Schema.ObjectId,
-            ref: 'Servicios'
-        }
-    ]
-});
+    }
+}, opciones);
 
-const UsuariosModelo = mongoose.model('Usuarios', usuarioSchema);
+const UsuariosModelo = mongoose.model('UsuariosModelo', usuarioBase);
 
-module.exports = { UsuariosModelo }
+module.exports = UsuariosModelo
