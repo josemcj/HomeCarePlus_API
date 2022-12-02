@@ -71,6 +71,35 @@ const addUsuario = async (req, res) => {
     }
 }
 
+const login = async (req, res) => {
+    const email = req.body.email ? req.body.email : null;
+    const password = req.body.contrasena ? req.body.contrasena : null;
+
+    await UsuariosModelo.findOne({ email: email }).exec()
+        .then(usuario => {
+            if (usuario) {
+
+                bcrypt.compare(password, usuario.contrasena, (err, resultado) => {
+                    if (resultado) {
+                        // La contraseña coincide
+                        res.status(200).json({
+                            code: 200,
+                            message: 'Bienvenido',
+                            usuario: usuario
+                        });
+                    } else {
+                        // La contraseña es incorrecta
+                        res.status(403).json({ code: 403, message: 'Contraseña incorrecta' });
+                    }
+                });
+
+            } else {
+                res.status(404).json({ code: 404, message: 'El usuario no está registrado' })
+            }
+        })
+        .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) )
+}
+
 // Obtener todos los usuarios
 const getUsuarios = async (req, res) => {
     await UsuariosModelo.find({})
@@ -85,5 +114,6 @@ const getUsuarios = async (req, res) => {
 
 module.exports = {
     addUsuario,
+    login,
     getUsuarios
 }
