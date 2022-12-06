@@ -11,7 +11,7 @@ URL Vercel: https://homecareplus.vercel.app
 - <b>/api/registrar-usuario</b> (POST): Registrar un usuario. Funciona tanto para clientes como para prestadores de servicios.
 - <b>/api/login</b> (POST): Iniciar sesión. Funciona tanto para clientes como para prestadores de servicios.
 - <b>/api/usuarios</b> (GET): Listar todos los usuarios (prestadores y clientes).
-- <b>/usuario/:idUsuario</b> (GET): Obtener un usuario por su ID (sustituir <em>:idUsuario</em> por el ID correspondiente).
+- <b>/api/usuario/:idUsuario</b> (GET): Obtener un usuario por su ID (sustituir <em>:idUsuario</em> por el ID correspondiente).
 
 <h3>Servicios</h3>
 

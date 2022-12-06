@@ -114,7 +114,6 @@ const getUsuarios = async (req, res) => {
 
 // Obtener un usuario por su ID
 const getUsuario = async (req, res) => {
-    console.log(req.params.idUsuario)
     await UsuariosModelo.findById(req.params.idUsuario).exec()
         .then(usuario => {
 
