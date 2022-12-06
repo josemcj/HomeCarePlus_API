@@ -4,7 +4,7 @@ API REST con Express y MongoDB.
 <h2>Lista de URLs para consumir</h2>
 
 URL local: http://localhost:3000</br>
-URL Vercel: https://homecareplus.vercel.app/
+URL Vercel: https://homecareplus.vercel.app
 
 <h3>Usuarios</h3>
 
