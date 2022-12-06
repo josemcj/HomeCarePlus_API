@@ -12,7 +12,7 @@ URL Vercel: https://homecareplus.vercel.app
 - <b>/api/login</b> (POST): Iniciar sesión. Funciona tanto para clientes como para prestadores de servicios.
 - <b>/api/usuarios</b> (GET): Listar todos los usuarios (prestadores y clientes).
 - <b>/api/usuario/:idUsuario</b> (GET): Obtener un usuario por su ID (sustituir <em>:idUsuario</em> por el ID correspondiente).
-- <b>/usuario/:idUsuario/editar</b> (PATCH): Editar un usuario por su ID (sustituir <em>:idUsuario</em> por el ID correspondiente). Recibe los campos: nombre, telefono, calle, numero, cp, colonia, municipio, estado. <b>NOTA: No actualiza email, contraseña ni la profesión en caso de ser prestador de servicios.</b>
+- <b>/api/usuario/:idUsuario/editar</b> (PATCH): Editar un usuario por su ID (sustituir <em>:idUsuario</em> por el ID correspondiente). Recibe los campos: nombre, telefono, calle, numero, cp, colonia, municipio, estado. <b>NOTA: No actualiza email, contraseña ni la profesión en caso de ser prestador de servicios.</b>
 
 <h3>Servicios</h3>
 
