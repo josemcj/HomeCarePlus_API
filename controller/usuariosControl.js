@@ -112,8 +112,31 @@ const getUsuarios = async (req, res) => {
         .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) )
 }
 
+// Obtener un usuario por su ID
+const getUsuario = async (req, res) => {
+    console.log(req.params.idUsuario)
+    await UsuariosModelo.findById(req.params.idUsuario).exec()
+        .then(usuario => {
+
+            if (usuario) {
+                res.status(200).json({
+                    code: 200,
+                    usuario: usuario
+                });
+            } else {
+                res.status(404).json({
+                    code: 404,
+                    message: 'El usuario no existe'
+                });
+            }
+
+        })
+        .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
+}
+
 module.exports = {
     addUsuario,
     login,
-    getUsuarios
+    getUsuarios,
+    getUsuario
 }
