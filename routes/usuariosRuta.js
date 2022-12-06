@@ -11,4 +11,7 @@ router.get('/usuarios', usuariosControl.getUsuarios);
 // Obtener usuario por su ID
 router.get('/usuario/:idUsuario', usuariosControl.getUsuario);
 
+// Editar usuario (excepto email y contraseña)
+router.patch('/usuario/:idUsuario/editar', usuariosControl.updateUsuario);
+
 module.exports = router;

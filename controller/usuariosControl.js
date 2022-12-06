@@ -133,9 +133,40 @@ const getUsuario = async (req, res) => {
         .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
 }
 
+// Actualizar usuario (excepto email y contraseña)
+const updateUsuario = async (req, res) => {
+
+    const idUsuario = req.params.idUsuario;
+    
+    const usuarioDatosActualizar = {
+        nombre: req.body.nombre,
+        telefono: req.body.telefono,
+        direccion: {
+            calle: req.body.calle,
+            numero: req.body.numero,
+            cp: req.body.cp,
+            colonia: req.body.colonia,
+            municipio: req.body.municipio,
+            estado: req.body.estado
+        }
+    }
+
+    await UsuariosModelo.findOneAndUpdate({ _id: idUsuario }, usuarioDatosActualizar, { new: true })
+        .then(usuario => {
+            res.status(200).json({
+                code: 200,
+                message: 'Datos actualizados correctamente',
+                usuario: usuario
+            });
+        })
+        .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
+
+}
+
 module.exports = {
     addUsuario,
     login,
     getUsuarios,
-    getUsuario
+    getUsuario,
+    updateUsuario
 }
