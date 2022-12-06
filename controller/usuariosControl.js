@@ -135,10 +135,11 @@ const getUsuario = async (req, res) => {
 
 // Actualizar usuario (excepto email y contraseña)
 const updateUsuario = async (req, res) => {
+    const idUsuario = { _id: req.params.idUsuario };
+    let usuarioDatosActualizar = {};
+    const usuarioActualizar = await UsuariosModelo.findById(req.params.idUsuario).exec()
 
-    const idUsuario = req.params.idUsuario;
-    
-    const usuarioDatosActualizar = {
+    usuarioDatosActualizar = {
         nombre: req.body.nombre,
         telefono: req.body.telefono,
         direccion: {
@@ -151,16 +152,32 @@ const updateUsuario = async (req, res) => {
         }
     }
 
-    await UsuariosModelo.findOneAndUpdate({ _id: idUsuario }, usuarioDatosActualizar, { new: true })
-        .then(usuario => {
-            res.status(200).json({
-                code: 200,
-                message: 'Datos actualizados correctamente',
-                usuario: usuario
-            });
-        })
-        .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
+    if (usuarioActualizar.tipoUsuario == 2) {
+        // Actualizar prestador
+        usuarioDatosActualizar.profesion = req.body.profesion;
 
+        await PrestadorModelo.findOneAndUpdate(idUsuario, usuarioDatosActualizar, { new: true })
+            .then(usuario => {
+                res.status(200).json({
+                    code: 200,
+                    message: 'Datos actualizados correctamente',
+                    usuario: usuario
+                });
+            })
+            .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
+
+    } else if (usuarioActualizar.tipoUsuario == 1) {
+        // Actualizar cliente
+        await ClienteModelo.findOneAndUpdate(idUsuario, usuarioDatosActualizar, { new: true })
+            .then(usuario => {
+                res.status(200).json({
+                    code: 200,
+                    message: 'Datos actualizados correctamente',
+                    usuario: usuario
+                });
+            })
+            .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
+    }
 }
 
 module.exports = {
