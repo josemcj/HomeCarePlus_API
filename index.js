@@ -16,3 +16,5 @@ connectDB();
 app.use('/api', require('./routes/index'));
 
 app.listen(puerto, () => console.log(`Servidor corriendo en el puerto ${puerto}`));
+
+console.log('desde subir-imagen')
