@@ -14,4 +14,7 @@ router.get('/usuario/:idUsuario', usuariosControl.getUsuario);
 // Editar usuario (excepto email y contraseña)
 router.patch('/usuario/:idUsuario/editar', usuariosControl.updateUsuario);
 
+// Eliminar usuario por su ID
+router.delete('/usuario/:idUsuario/eliminar', usuariosControl.deleteUsuario);
+
 module.exports = router;

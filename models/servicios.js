@@ -21,7 +21,7 @@ const servicioSchema = new Schema({
     },
     prestadorDeServicio: {
         type: Schema.ObjectId,
-        ref: 'Usuarios'
+        ref: 'UsuariosModelo'
     }
 });
 

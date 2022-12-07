@@ -14,4 +14,10 @@ router.get('/servicios', serviciosControl.getServicios);
 // Obtener un servicio
 router.get('/servicio/:id', serviciosControl.getServicio);
 
+// Actualizar servicio
+router.patch('/servicio/:idServicio/editar', serviciosControl.updateServicio);
+
+// Eliminar servicio
+router.delete('/prestador/:idPrestador/servicio/:idServicio/eliminar', serviciosControl.deleteServicio);
+
 module.exports = router;

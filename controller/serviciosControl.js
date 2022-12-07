@@ -65,14 +65,19 @@ const getServicios = async (req, res) => {
 
 // Obtener info de un servicio
 const getServicio = async (req, res) => {
-    const servicio = await ServiciosModelo.findById(req.params.id).exec();
-    const prestador = await UsuariosModelo.findById(servicio.prestadorDeServicio).exec();
+    const servicio = await ServiciosModelo.findById(req.params.id).populate('prestadorDeServicio');
 
-    res.status(200).json({
-        code: 200,
-        servicio: servicio,
-        prestador: prestador
-    });
+    if (servicio) {
+        res.status(200).json({
+            code: 200,
+            servicio: servicio
+        });
+    } else {
+        res.status(404).json({
+            code: 404,
+            message: 'Servicio no encontrado'
+        });
+    }
 }
 
 // Listar servicio de un usuario (para seccion "Mis servicios")
@@ -94,9 +99,59 @@ const getServiciosDePrestador = async (req, res) => {
     }   
 }
 
+// Actualizar servicio (no actualiza imagen)
+const updateServicio = async (req, res) => {
+    const servicioDatosActualizar = {
+        titulo: req.body.titulo,
+        descripcion: req.body.descripcion,
+        precio: req.body.precio
+    }
+
+    await ServiciosModelo.findOneAndUpdate({ _id: req.params.idServicio }, servicioDatosActualizar, { new: true })
+        .then(servicio => {
+            res.status(200).json({
+                code: 200,
+                message: 'Servicio actualizado correctamente',
+                servicio: servicio
+            });
+        })
+        .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) )
+}
+
+// Eliminar servicio
+const deleteServicio = async (req, res) => {
+    const prestador = await UsuariosModelo.findById(req.params.idPrestador);
+    const servicio = await ServiciosModelo.findById(req.params.idServicio);
+
+    // Eliminar servicio
+    ServiciosModelo.findByIdAndRemove(req.params.idServicio, (err, servicioEliminado) => {
+        if (!err) {
+            if (servicioEliminado) {
+                res.status(200).json({
+                    code: 200,
+                    message: 'Servicio eliminado correctamente',
+                    servicioEliminado: servicioEliminado
+                });
+            } else {
+                res.status(404).json({
+                    code: 404,
+                    message: 'El servicio no existe'
+                });
+            }
+        }
+        else res.status(500).json({ code: 500, message: 'Ha ocurrido un error' });
+    });
+
+    // Eliminar referencia del arreglo serviciosPublicados del prestador
+    prestador.serviciosPublicados.pull(servicio);
+    await prestador.save();
+}
+
 module.exports = {
     addServicio,
     getServicios,
     getServicio,
-    getServiciosDePrestador
+    getServiciosDePrestador,
+    updateServicio,
+    deleteServicio
 }

@@ -180,10 +180,32 @@ const updateUsuario = async (req, res) => {
     }
 }
 
+// Eliminar un usuario por su ID
+const deleteUsuario = (req, res) => {
+    UsuariosModelo.findByIdAndRemove(req.params.idUsuario, (err, usuarioEliminado) => {
+        if (!err) {
+            if (usuarioEliminado) {
+                res.status(200).json({
+                    code: 200,
+                    message: 'Usuario eliminado correctamente',
+                    usuarioEliminado: usuarioEliminado
+                });
+            } else {
+                res.status(404).json({
+                    code: 404,
+                    message: 'El usuario no existe'
+                });
+            }
+        }
+        else res.status(500).json({ code: 500, message: 'Ha ocurrido un error' });
+    });
+}
+
 module.exports = {
     addUsuario,
     login,
     getUsuarios,
     getUsuario,
-    updateUsuario
+    updateUsuario,
+    deleteUsuario
 }
