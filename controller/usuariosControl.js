@@ -4,7 +4,6 @@ const PrestadorModelo = require('../models/usuarios.prestador');
 const ClienteModelo = require('../models/usuarios.cliente');
 
 /**
- * Usuarios
  * tipoUsuario = 1 (clientes), 2 (prestadores)
  */
 
