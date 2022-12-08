@@ -1,6 +1,10 @@
 # Variables de entorno
 *.env
 
+# Carpeta de imagenes
+images/services/**
+images/users/**
+
 # Notas
 *.txt
 

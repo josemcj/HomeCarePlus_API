@@ -3,8 +3,17 @@ const UsuariosModelo = require('../models/usuarios');
 const PrestadorModelo = require('../models/usuarios.prestador');
 const ClienteModelo = require('../models/usuarios.cliente');
 
+const imagen = (req, res) => {
+    console.log(req.file)
+    res.status(200).json({
+        code: 200,
+        message: 'ok'
+    })
+}
+
 /**
  * tipoUsuario = 1 (clientes), 2 (prestadores)
+ * sexo: 1 = Femenino, 2 Masculino
  */
 
 const addUsuario = async (req, res) => {
@@ -22,6 +31,7 @@ const addUsuario = async (req, res) => {
                     email: req.body.email,
                     contrasena: hash,
                     telefono: req.body.telefono,
+                    sexo: req.body.sexo,
                     tipoUsuario: req.body.tipoUsuario,
                     direccion: {
                         calle: req.body.calle,
@@ -38,6 +48,7 @@ const addUsuario = async (req, res) => {
                     email: req.body.email,
                     contrasena: hash,
                     telefono: req.body.telefono,
+                    sexo: req.body.sexo,
                     tipoUsuario: req.body.tipoUsuario,
                     profesion: req.body.profesion,
                     direccion: {
@@ -141,6 +152,7 @@ const updateUsuario = async (req, res) => {
     usuarioDatosActualizar = {
         nombre: req.body.nombre,
         telefono: req.body.telefono,
+        sexo: req.body.sexo,
         direccion: {
             calle: req.body.calle,
             numero: req.body.numero,
@@ -206,5 +218,6 @@ module.exports = {
     getUsuarios,
     getUsuario,
     updateUsuario,
-    deleteUsuario
+    deleteUsuario,
+    imagen
 }

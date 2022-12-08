@@ -17,4 +17,11 @@ router.patch('/usuario/:idUsuario/editar', usuariosControl.updateUsuario);
 // Eliminar usuario por su ID
 router.delete('/usuario/:idUsuario/eliminar', usuariosControl.deleteUsuario);
 
+/**
+ * SUBIR IMAGENES (PRUEBA)
+ */
+const uploadImage = require('../middleware/multer');
+router.post('/upload', uploadImage, usuariosControl.imagen)
+// router.post('/upload', usuariosControl.imagen)
+
 module.exports = router;

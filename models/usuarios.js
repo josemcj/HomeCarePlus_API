@@ -19,6 +19,10 @@ const usuarioBase = new Schema({
         type: String,
         required: true
     },
+    sexo: {
+        type: Number,
+        required: true
+    },
     tipoUsuario: {
         type: Number,
         required: true
