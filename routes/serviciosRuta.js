@@ -4,9 +4,6 @@ const serviciosControl = require('../controller/serviciosControl');
 const uploadImageService = require('../middleware/multerServicios');
 
 // Registrar servicio
-// router.post('/prestador/:idPrestador/registrar-servicio', serviciosControl.addServicio);
-
-// prueba img
 router.post('/prestador/:idPrestador/registrar-servicio', uploadImageService, serviciosControl.addServicio);
 
 // Listar servicios de un prestador (para seccion "Mis servicios")

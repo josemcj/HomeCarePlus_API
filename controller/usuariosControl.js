@@ -140,7 +140,7 @@ const updateUsuario = async (req, res) => {
     const idUsuario = { _id: req.params.idUsuario };
     let usuarioDatosActualizar = {};
     const usuarioActualizar = await UsuariosModelo.findById(req.params.idUsuario).exec();
-    let imagenUsuario = req.file ? req.filename : 'default_user.jpg';
+    let imagenUsuario = req.file ? req.file.filename : 'default_user.jpg';
 
     // Validar si el usuario tiene imagen -> Aun no funciona si el usuario desea borrar la imagen
     if (usuarioActualizar.imagen != 'default_user.jpg') {

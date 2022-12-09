@@ -40,9 +40,8 @@ const uploadImageUser = (req, res, next) => {
                 code: 400,
                 message: err
             });
-        }
-
-        next();
+            
+        } else next();
     });
 }
 
