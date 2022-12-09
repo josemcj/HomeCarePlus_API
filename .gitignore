@@ -5,6 +5,7 @@
 uploads/images/services/**
 uploads/images/users/**
 !default_user.jpg
+!default_service.jpg
 
 # Notas
 *.txt

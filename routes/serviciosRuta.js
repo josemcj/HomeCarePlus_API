@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const serviciosControl = require('../controller/serviciosControl');
+const uploadImageService = require('../middleware/multerServicios');
 
 // Registrar servicio
-router.post('/prestador/:idPrestador/registrar-servicio', serviciosControl.addServicio);
+// router.post('/prestador/:idPrestador/registrar-servicio', serviciosControl.addServicio);
+
+// prueba img
+router.post('/prestador/:idPrestador/registrar-servicio', uploadImageService, serviciosControl.addServicio);
 
 // Listar servicios de un prestador (para seccion "Mis servicios")
 router.get('/prestador/:idPrestador/servicios', serviciosControl.getServiciosDePrestador)
@@ -15,7 +19,7 @@ router.get('/servicios', serviciosControl.getServicios);
 router.get('/servicio/:id', serviciosControl.getServicio);
 
 // Actualizar servicio
-router.patch('/servicio/:idServicio/editar', serviciosControl.updateServicio);
+router.patch('/servicio/:idServicio/editar', uploadImageService, serviciosControl.updateServicio);
 
 // Eliminar servicio
 router.delete('/prestador/:idPrestador/servicio/:idServicio/eliminar', serviciosControl.deleteServicio);

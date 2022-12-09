@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const usuariosControl = require('../controller/usuariosControl');
-const uploadImage = require('../middleware/multer');
+const uploadImageUser = require('../middleware/multerUsuarios');
 
 router.post('/registrar-usuario', usuariosControl.addUsuario);
 router.post('/login', usuariosControl.login);
@@ -13,15 +13,9 @@ router.get('/usuarios', usuariosControl.getUsuarios);
 router.get('/usuario/:idUsuario', usuariosControl.getUsuario);
 
 // Editar usuario (excepto email y contraseña)
-router.patch('/usuario/:idUsuario/editar', uploadImage, usuariosControl.updateUsuario);
+router.patch('/usuario/:idUsuario/editar', uploadImageUser, usuariosControl.updateUsuario);
 
 // Eliminar usuario por su ID
 router.delete('/usuario/:idUsuario/eliminar', usuariosControl.deleteUsuario);
-
-/**
- * SUBIR IMAGENES (PRUEBA)
- */
-
-// router.post('/upload', uploadImage, usuariosControl.imagen);
 
 module.exports = router;

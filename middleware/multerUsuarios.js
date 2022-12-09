@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/images/users/');
     },
     filename: (req, file, cb) => {
-        const nombreImg = `${ Date.now() }${ extname(file.originalname) }`;
+        const nombreImg = `user_${ Date.now() }${ extname(file.originalname) }`;
         cb(null, nombreImg);
     }
 });
@@ -24,8 +24,8 @@ const uploadImg = multer({
     }
 });
 
-const uploadImage = (req, res, next) => {
-    const upload = uploadImg.single('imagenUsuario');
+const uploadImageUser = (req, res, next) => {
+    const upload = uploadImg.single('imagen');
 
     upload(req, res, err => {
         if (err instanceof multer.MulterError) {
@@ -46,4 +46,4 @@ const uploadImage = (req, res, next) => {
     });
 }
 
-module.exports = uploadImage;
+module.exports = uploadImageUser;

@@ -5,6 +5,7 @@ const UsuariosModelo = require('../models/usuarios');
 const addServicio = async (req, res) => {
     // Crear servicio
     const servicio = new ServiciosModelo(req.body);
+    servicio.imagen = req.file ? req.file.filename : 'default_service.jpg';
 
     // Buscar prestador para asignar al servicio
     const prestador = await UsuariosModelo.findById(req.params.idPrestador);
@@ -101,9 +102,19 @@ const getServiciosDePrestador = async (req, res) => {
 
 // Actualizar servicio (no actualiza imagen)
 const updateServicio = async (req, res) => {
+    const servicioActualizar = await ServiciosModelo.findById(req.params.idServicio).exec();
+    let imagenServicio = req.file ? req.file.filename : 'default_service.jpg';
+
+    // Validar si el servicio tiene imagen
+    if (servicioActualizar.imagen != 'default_service.jpg') {
+        if (req.file) imagenServicio = req.file.filename;
+        else imagenServicio = servicioActualizar.imagen
+    }
+
     const servicioDatosActualizar = {
         titulo: req.body.titulo,
         descripcion: req.body.descripcion,
+        imagen: imagenServicio,
         precio: req.body.precio
     }
 

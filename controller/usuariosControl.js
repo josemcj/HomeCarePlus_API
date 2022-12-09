@@ -3,18 +3,6 @@ const UsuariosModelo = require('../models/usuarios');
 const PrestadorModelo = require('../models/usuarios.prestador');
 const ClienteModelo = require('../models/usuarios.cliente');
 
-const imagen = (req, res) => {
-    const imagenUsuario = req.file ? req.file.filename : 'default_user.jpg';
-    console.log(imagenUsuario);
-    if (req.file) {
-        console.log(req.file.filename)
-        res.status(200).json({
-            code: 200,
-            message: 'ok'
-        })
-    }
-}
-
 /**
  * tipoUsuario = 1 (clientes), 2 (prestadores)
  * sexo: 1 = Femenino, 2 Masculino
@@ -152,9 +140,9 @@ const updateUsuario = async (req, res) => {
     const idUsuario = { _id: req.params.idUsuario };
     let usuarioDatosActualizar = {};
     const usuarioActualizar = await UsuariosModelo.findById(req.params.idUsuario).exec();
-    let imagenUsuario = 'default_user.jpg';
+    let imagenUsuario = req.file ? req.filename : 'default_user.jpg';
 
-    // Validar si el usuario tiene imagen
+    // Validar si el usuario tiene imagen -> Aun no funciona si el usuario desea borrar la imagen
     if (usuarioActualizar.imagen != 'default_user.jpg') {
         if (req.file) imagenUsuario = req.file.filename;
         else imagenUsuario = usuarioActualizar.imagen
@@ -230,6 +218,5 @@ module.exports = {
     getUsuarios,
     getUsuario,
     updateUsuario,
-    deleteUsuario,
-    imagen
+    deleteUsuario
 }

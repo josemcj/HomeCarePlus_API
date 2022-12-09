@@ -13,7 +13,7 @@ const servicioSchema = new Schema({
     imagen: {
         type: String,
         required: true,
-        default: 'imagen.jpg'
+        default: 'default_service.jpg'
     },
     precio: {
         type: Number,
