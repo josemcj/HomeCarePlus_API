@@ -4,11 +4,15 @@ const PrestadorModelo = require('../models/usuarios.prestador');
 const ClienteModelo = require('../models/usuarios.cliente');
 
 const imagen = (req, res) => {
-    console.log(req.file)
-    res.status(200).json({
-        code: 200,
-        message: 'ok'
-    })
+    const imagenUsuario = req.file ? req.file.filename : 'default_user.jpg';
+    console.log(imagenUsuario);
+    if (req.file) {
+        console.log(req.file.filename)
+        res.status(200).json({
+            code: 200,
+            message: 'ok'
+        })
+    }
 }
 
 /**
@@ -147,12 +151,20 @@ const getUsuario = async (req, res) => {
 const updateUsuario = async (req, res) => {
     const idUsuario = { _id: req.params.idUsuario };
     let usuarioDatosActualizar = {};
-    const usuarioActualizar = await UsuariosModelo.findById(req.params.idUsuario).exec()
+    const usuarioActualizar = await UsuariosModelo.findById(req.params.idUsuario).exec();
+    let imagenUsuario = 'default_user.jpg';
+
+    // Validar si el usuario tiene imagen
+    if (usuarioActualizar.imagen != 'default_user.jpg') {
+        if (req.file) imagenUsuario = req.file.filename;
+        else imagenUsuario = usuarioActualizar.imagen
+    }
 
     usuarioDatosActualizar = {
         nombre: req.body.nombre,
         telefono: req.body.telefono,
         sexo: req.body.sexo,
+        imagen: imagenUsuario,
         direccion: {
             calle: req.body.calle,
             numero: req.body.numero,

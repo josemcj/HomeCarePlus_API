@@ -6,6 +6,7 @@ const app = express();
 
 app.use( express.urlencoded({ extended: false }) );
 app.use( express.json() );
+app.use('/static', express.static(`${__dirname}/uploads`));
 
 // Obtener configuracion
 dotenv.config({ path: './config/config.env' });

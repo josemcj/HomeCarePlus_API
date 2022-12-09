@@ -2,8 +2,9 @@
 *.env
 
 # Carpeta de imagenes
-images/services/**
-images/users/**
+uploads/images/services/**
+uploads/images/users/**
+!default_user.jpg
 
 # Notas
 *.txt

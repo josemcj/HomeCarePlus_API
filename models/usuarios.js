@@ -23,6 +23,10 @@ const usuarioBase = new Schema({
         type: Number,
         required: true
     },
+    imagen: {
+        type: String,
+        default: 'default_user.jpg'
+    },
     tipoUsuario: {
         type: Number,
         required: true
