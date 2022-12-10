@@ -1,5 +1,6 @@
 const { ServiciosModelo } = require('../models/servicios');
 const UsuariosModelo = require('../models/usuarios');
+const eliminarImg = require('./eliminarImg');
 
 // Registrar servicio
 const addServicio = async (req, res) => {
@@ -107,7 +108,10 @@ const updateServicio = async (req, res) => {
 
     // Validar si el servicio tiene imagen
     if (servicioActualizar.imagen != 'default_service.jpg') {
-        if (req.file) imagenServicio = req.file.filename;
+        if (req.file) {
+            imagenServicio = req.file.filename;
+            eliminarImg(servicioActualizar.imagen, 'servicio');
+        }
         else imagenServicio = servicioActualizar.imagen
     }
 
@@ -137,6 +141,8 @@ const deleteServicio = async (req, res) => {
     // Eliminar servicio
     ServiciosModelo.findByIdAndRemove(req.params.idServicio, (err, servicioEliminado) => {
         if (!err) {
+            eliminarImg(servicio.imagen, 'servicio');
+
             if (servicioEliminado) {
                 res.status(200).json({
                     code: 200,

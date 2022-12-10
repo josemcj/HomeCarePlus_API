@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const UsuariosModelo = require('../models/usuarios');
 const PrestadorModelo = require('../models/usuarios.prestador');
 const ClienteModelo = require('../models/usuarios.cliente');
+const eliminarImg = require('./eliminarImg');
 
 /**
  * tipoUsuario = 1 (clientes), 2 (prestadores)
@@ -144,7 +145,10 @@ const updateUsuario = async (req, res) => {
 
     // Validar si el usuario tiene imagen -> Aun no funciona si el usuario desea borrar la imagen
     if (usuarioActualizar.imagen != 'default_user.jpg') {
-        if (req.file) imagenUsuario = req.file.filename;
+        if (req.file) {
+            imagenUsuario = req.file.filename;
+            eliminarImg(usuarioActualizar.imagen, 'usuario');
+        }
         else imagenUsuario = usuarioActualizar.imagen
     }
 
@@ -192,9 +196,14 @@ const updateUsuario = async (req, res) => {
 }
 
 // Eliminar un usuario por su ID
-const deleteUsuario = (req, res) => {
+const deleteUsuario = async (req, res) => {
+    // Obtener imagen a eliminar
+    const { imagen } = await UsuariosModelo.findById(req.params.idUsuario).exec();
+
     UsuariosModelo.findByIdAndRemove(req.params.idUsuario, (err, usuarioEliminado) => {
         if (!err) {
+            eliminarImg(imagen, 'usuario');
+
             if (usuarioEliminado) {
                 res.status(200).json({
                     code: 200,
