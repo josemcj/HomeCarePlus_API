@@ -5,7 +5,8 @@ const mimeTypesPermitidos = ['image/jpeg', 'image/png'];
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/images/users/');
+        // cb(null, 'uploads/images/users/');
+        cb(null, 'tmp/');
     },
     filename: (req, file, cb) => {
         const nombreImg = `user_${ Date.now() }${ extname(file.originalname) }`;
