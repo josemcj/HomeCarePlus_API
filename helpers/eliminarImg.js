@@ -1,13 +1,19 @@
 const fs = require('fs').promises;
 
-eliminarImg = (nombreImg, ruta = null) => {
+/**
+ * Elimina la imagen del servidor cuando la imagen almacenada en la BD es cambiada
+ * 
+ * @param {string} nombreImg Nombre de la imagen a elminar
+ * @param {string} tipo Si la imagen es de un 'usuario' o un 'servicio'
+ */
+const eliminarImg = (nombreImg, tipo = null) => {
     let carpeta
 
-    if (ruta != null) {
-        if (ruta == 'usuario') carpeta = 'users';
-        else if (ruta == 'servicio') carpeta = 'services';
-        else carpeta = ruta;
-    } else carpeta = ruta;
+    if (tipo != null) {
+        if (tipo == 'usuario') carpeta = 'users';
+        else if (tipo == 'servicio') carpeta = 'services';
+        else carpeta = tipo;
+    } else carpeta = tipo;
 
     // Validar que no sea la imagen por defecto
     if (nombreImg != 'default_user.jpg' && nombreImg != 'default_service.jpg') {

@@ -13,14 +13,10 @@ router.get('/usuarios', usuariosControl.getUsuarios);
 router.get('/usuario/:idUsuario', usuariosControl.getUsuario);
 
 // Editar usuario (excepto email y contraseña)
-router.patch('/usuario/:idUsuario/editar', uploadImageUser, usuariosControl.updateUsuario);
+// router.patch('/usuario/:idUsuario/editar', uploadImageUser, usuariosControl.updateUsuario); -> Subida con Multer
+router.patch('/usuario/:idUsuario/editar', usuariosControl.updateUsuario);
 
 // Eliminar usuario por su ID
 router.delete('/usuario/:idUsuario/eliminar', usuariosControl.deleteUsuario);
-
-/**
- * PRUEBA -> Subir imagenes desde Volley (base64)
- */
-router.patch('/editar/:idUsuario', usuariosControl.updateImg);
 
 module.exports = router;

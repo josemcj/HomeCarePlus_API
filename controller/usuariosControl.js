@@ -2,77 +2,20 @@ const bcrypt = require('bcrypt');
 const UsuariosModelo = require('../models/usuarios');
 const PrestadorModelo = require('../models/usuarios.prestador');
 const ClienteModelo = require('../models/usuarios.cliente');
-const eliminarImg = require('./eliminarImg');
-const subirImgUsuario = require('../helpers/uploadBase64Img');
-
-/**
- * tipoUsuario = 1 (clientes), 2 (prestadores)
- * sexo: 1 = Femenino, 2 Masculino
- */
-
-/**
- * PRUEBA -> Subir imagenes desde Volley (base64)
- */
-const updateImg = async (req, res) => {
-    const idUsuario = { _id: req.params.idUsuario };
-    const nombre = req.body.nombre;
-    const imagenBase64 = req.body.imagen;
-    let usuarioDatosActualizar = {};
-    let imagenNueva;
-    const usuarioActualizar = await UsuariosModelo.findById(req.params.idUsuario).exec();
-
-    // Validar que exista la imagen
-    if (imagenBase64.length) {
-        imagenNueva = await subirImgUsuario(imagenBase64);
-
-        if (imagenNueva != false) {
-            // Eliminar imagen anterior
-            eliminarImg(usuarioActualizar.imagen, 'usuario');
-        }
-        else imagenNueva = usuarioActualizar.imagen;
-    } else imagenNueva = usuarioActualizar.imagen;
-
-    usuarioDatosActualizar = {
-        nombre: nombre,
-        imagen: imagenNueva
-    }
-
-    // Guardar cambios
-    if (usuarioActualizar.tipoUsuario == 2) {
-        // Actualizar prestador
-        usuarioDatosActualizar.profesion = req.body.profesion;
-
-        await PrestadorModelo.findOneAndUpdate(idUsuario, usuarioDatosActualizar, { new: true })
-            .then(usuario => {
-                res.status(200).json({
-                    code: 200,
-                    message: 'Datos actualizados correctamente',
-                    usuario: usuario
-                });
-            })
-            .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
-
-    } else if (usuarioActualizar.tipoUsuario == 1) {
-        // Actualizar cliente
-        await ClienteModelo.findOneAndUpdate(idUsuario, usuarioDatosActualizar, { new: true })
-            .then(usuario => {
-                res.status(200).json({
-                    code: 200,
-                    message: 'Datos actualizados correctamente',
-                    usuario: usuario
-                });
-            })
-            .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
-    }
-}
-
+const eliminarImg = require('../helpers/eliminarImg');
+const uploadImage = require('../helpers/uploadImage');
 
 const addUsuario = async (req, res) => {
     const user = await UsuariosModelo.find({ email: req.body.email }).exec();
 
     // Valida que el usuario no este registrado
     if (!user.length) {
-        
+
+        /**
+         * @typedef {Object} usuario
+         * @property {string} usuario.tipoUsuario Cliente: 1, Prestador: 2
+         * @property {string} usuario.sexo Femenino: 1, Masculino: 2
+         */
         let usuario;
 
         await bcrypt.hash(req.body.contrasena, 10).then(hash => {
@@ -197,11 +140,14 @@ const getUsuario = async (req, res) => {
 // Actualizar usuario (excepto email y contraseña)
 const updateUsuario = async (req, res) => {
     const idUsuario = { _id: req.params.idUsuario };
+    const imagenBase64 = req.body.imagen ? req.body.imagen : '';
     let usuarioDatosActualizar = {};
+    let imagenNueva;
     const usuarioActualizar = await UsuariosModelo.findById(req.params.idUsuario).exec();
-    let imagenUsuario = req.file ? req.file.filename : 'default_user.jpg';
+    // let imagenUsuario = req.file ? req.file.filename : 'default_user.jpg'; -> Subida con Multer
 
     // Validar si el usuario tiene imagen -> Aun no funciona si el usuario desea borrar la imagen
+    /* Subida con Multer
     if (usuarioActualizar.imagen != 'default_user.jpg') {
         if (req.file) {
             imagenUsuario = req.file.filename;
@@ -209,12 +155,29 @@ const updateUsuario = async (req, res) => {
         }
         else imagenUsuario = usuarioActualizar.imagen
     }
+    */
+
+    // Validar que exista la imagen -> Subida de imagenes base64
+    if (imagenBase64.length) {
+        imagenNueva = await uploadImage(imagenBase64);
+
+        if (imagenNueva != false) {
+            // Eliminar imagen anterior
+            eliminarImg(usuarioActualizar.imagen, 'usuario');
+        }
+        else imagenNueva = usuarioActualizar.imagen;
+    } else imagenNueva = usuarioActualizar.imagen;
+
+    usuarioDatosActualizar = {
+        nombre: req.body.nombre,
+        imagen: imagenNueva
+    }
 
     usuarioDatosActualizar = {
         nombre: req.body.nombre,
         telefono: req.body.telefono,
         sexo: req.body.sexo,
-        imagen: imagenUsuario,
+        imagen: imagenNueva,
         direccion: {
             calle: req.body.calle,
             numero: req.body.numero,
@@ -285,6 +248,5 @@ module.exports = {
     getUsuarios,
     getUsuario,
     updateUsuario,
-    deleteUsuario,
-    updateImg
+    deleteUsuario
 }

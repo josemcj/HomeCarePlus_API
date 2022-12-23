@@ -1,6 +1,6 @@
 const { ServiciosModelo } = require('../models/servicios');
 const UsuariosModelo = require('../models/usuarios');
-const eliminarImg = require('./eliminarImg');
+const eliminarImg = require('../helpers/eliminarImg');
 
 // Registrar servicio
 const addServicio = async (req, res) => {

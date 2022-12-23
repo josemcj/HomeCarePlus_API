@@ -1,10 +1,12 @@
 const fs = require('fs');
 
 /**
- * Convierte el string base64 recibido de Volley a una imagen
+ * Convierte un string base64 recibido de Volley a una imagen JPG
+ * 
+ * @param {string} imagenBase64 Imagen codificada en base64
+ * @returns {(string | boolean)} Nombre de la imagen (String) o false si no pudo subirla
  */
-
-const subirImgUsuario = async (imagenBase64) => {
+const uploadImage = async (imagenBase64) => {
     try {
         const nombreImg = `user_${ Date.now() }.jpg`;
         const path = `./uploads/images/users/${nombreImg}`;
@@ -20,4 +22,4 @@ const subirImgUsuario = async (imagenBase64) => {
     }
 }
 
-module.exports = subirImgUsuario;
+module.exports = uploadImage;
