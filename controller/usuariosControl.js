@@ -170,11 +170,6 @@ const updateUsuario = async (req, res) => {
 
     usuarioDatosActualizar = {
         nombre: req.body.nombre,
-        imagen: imagenNueva
-    }
-
-    usuarioDatosActualizar = {
-        nombre: req.body.nombre,
         telefono: req.body.telefono,
         sexo: req.body.sexo,
         imagen: imagenNueva,
