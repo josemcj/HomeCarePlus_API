@@ -18,4 +18,9 @@ router.patch('/usuario/:idUsuario/editar', uploadImageUser, usuariosControl.upda
 // Eliminar usuario por su ID
 router.delete('/usuario/:idUsuario/eliminar', usuariosControl.deleteUsuario);
 
+/**
+ * PRUEBA -> Subir imagenes desde Volley (base64)
+ */
+router.patch('/editar/:idUsuario', usuariosControl.updateImg);
+
 module.exports = router;

@@ -3,11 +3,69 @@ const UsuariosModelo = require('../models/usuarios');
 const PrestadorModelo = require('../models/usuarios.prestador');
 const ClienteModelo = require('../models/usuarios.cliente');
 const eliminarImg = require('./eliminarImg');
+const subirImgUsuario = require('../helpers/uploadBase64Img');
 
 /**
  * tipoUsuario = 1 (clientes), 2 (prestadores)
  * sexo: 1 = Femenino, 2 Masculino
  */
+
+/**
+ * PRUEBA -> Subir imagenes desde Volley (base64)
+ */
+const updateImg = async (req, res) => {
+    const idUsuario = { _id: req.params.idUsuario };
+    const nombre = req.body.nombre;
+    const imagenBase64 = req.body.imagen;
+    let usuarioDatosActualizar = {};
+    let imagenNueva;
+    const usuarioActualizar = await UsuariosModelo.findById(req.params.idUsuario).exec();
+
+    // Validar que exista la imagen
+    if (imagenBase64.length) {
+        imagenNueva = await subirImgUsuario(imagenBase64);
+
+        if (imagenNueva != false) {
+            // Eliminar imagen anterior
+            eliminarImg(usuarioActualizar.imagen, 'usuario');
+        }
+        else imagenNueva = usuarioActualizar.imagen;
+    } else imagenNueva = usuarioActualizar.imagen;
+
+    usuarioDatosActualizar = {
+        nombre: nombre,
+        imagen: imagenNueva
+    }
+
+    // Guardar cambios
+    if (usuarioActualizar.tipoUsuario == 2) {
+        // Actualizar prestador
+        usuarioDatosActualizar.profesion = req.body.profesion;
+
+        await PrestadorModelo.findOneAndUpdate(idUsuario, usuarioDatosActualizar, { new: true })
+            .then(usuario => {
+                res.status(200).json({
+                    code: 200,
+                    message: 'Datos actualizados correctamente',
+                    usuario: usuario
+                });
+            })
+            .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
+
+    } else if (usuarioActualizar.tipoUsuario == 1) {
+        // Actualizar cliente
+        await ClienteModelo.findOneAndUpdate(idUsuario, usuarioDatosActualizar, { new: true })
+            .then(usuario => {
+                res.status(200).json({
+                    code: 200,
+                    message: 'Datos actualizados correctamente',
+                    usuario: usuario
+                });
+            })
+            .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
+    }
+}
+
 
 const addUsuario = async (req, res) => {
     const user = await UsuariosModelo.find({ email: req.body.email }).exec();
@@ -227,5 +285,6 @@ module.exports = {
     getUsuarios,
     getUsuario,
     updateUsuario,
-    deleteUsuario
+    deleteUsuario,
+    updateImg
 }
