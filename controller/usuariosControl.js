@@ -159,7 +159,7 @@ const updateUsuario = async (req, res) => {
 
     // Validar que exista la imagen -> Subida de imagenes base64
     if (imagenBase64.length) {
-        imagenNueva = await uploadImage(imagenBase64);
+        imagenNueva = await uploadImage(imagenBase64, 'usuario');
 
         if (imagenNueva != false) {
             // Eliminar imagen anterior

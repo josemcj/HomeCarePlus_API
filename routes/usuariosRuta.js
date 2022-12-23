@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const usuariosControl = require('../controller/usuariosControl');
-const uploadImageUser = require('../middleware/multerUsuarios');
+// const uploadImageUser = require('../middleware/multerUsuarios');
 
 router.post('/registrar-usuario', usuariosControl.addUsuario);
 router.post('/login', usuariosControl.login);
