@@ -7,7 +7,7 @@ const fs = require('fs');
  * @param {string} tipo Si la imagen es de un 'usuario' o un 'servicio'
  * @returns {(string | boolean)} Nombre de la imagen (String) o false si no pudo subirla
  */
-const uploadImage = async (imagenBase64, tipo) => {
+const uploadImage = (imagenBase64, tipo) => {
     try {
         let nombreImg;
         let carpeta;

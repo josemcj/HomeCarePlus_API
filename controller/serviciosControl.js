@@ -15,7 +15,7 @@ const addServicio = async (req, res) => {
 
     // Subir imagen
     if (req.body.imagen) {
-        nombreImg = await uploadImage(req.body.imagen, 'servicio');
+        nombreImg = uploadImage(req.body.imagen, 'servicio');
         if (nombreImg != false) servicio.imagen = nombreImg;
         else servicio.imagen = 'default_service.jpg';
 
@@ -122,7 +122,7 @@ const updateServicio = async (req, res) => {
 
     // Validar que exista la imagen -> Subida de imagenes base64
     if (imagenBase64.length) {
-        imagenNueva = await uploadImage(imagenBase64, 'servicio');
+        imagenNueva = uploadImage(imagenBase64, 'servicio');
 
         if (imagenNueva != false) {
             // Eliminar imagen anterior
