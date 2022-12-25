@@ -12,6 +12,12 @@ const prestadorSchema = new Schema({
             type: Schema.ObjectId,
             ref: 'Servicios'
         }
+    ],
+    serviciosPrestados: [
+        {
+            type: Schema.ObjectId,
+            ref: 'Pedidos'
+        }
     ]
 });
 
