@@ -1,7 +1,7 @@
 const { ServiciosModelo } = require('../models/servicios');
 const UsuariosModelo = require('../models/usuarios');
 const PedidosModelo = require('../models/pedidos');
-const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+const formatearFecha = require('../helpers/formatearFecha');
 
 /**
  * Almacena los diferentes estados que los servicios pueden tener
@@ -72,18 +72,6 @@ const getPedido = async (req, res) => {
         .populate('cliente');
     const prestador = await UsuariosModelo.findOne({ _id: pedido.servicio.prestadorDeServicio });
 
-    // Fecha en que se realizara el servicio
-    const fechaServicio = pedido.fechaServicio.toString().split(' ');
-    const mesServicio = meses[ pedido.fechaServicio.getMonth() ];
-    const horaServicio = fechaServicio[4].split(':');
-    const fechaServicioFinal = `${fechaServicio[2]} ${mesServicio.slice(0, 3)} ${fechaServicio[3]}, ${horaServicio[0]}:${horaServicio[1]} hrs`;
-
-    // Fecha en que se realizo el pedido
-    const fechaPedido = pedido.fechaPedido.toString().split(' ');
-    const mesPedido = meses[ pedido.fechaPedido.getMonth() ];
-    const horaPedido = fechaPedido[4].split(':');
-    const fechaPedidoFinal = `${fechaPedido[2]} ${mesPedido.slice(0, 3)} ${fechaPedido[3]}, ${horaPedido[0]}:${horaPedido[1]} hrs`;
-
     if (pedido) {
         res.status(200).json({
             code: 200,
@@ -108,9 +96,9 @@ const getPedido = async (req, res) => {
                     sexo: prestador.sexo,
                     imagen: prestador.imagen
                 },
-                fechaServicio: fechaServicioFinal,
-                estado: pedido.estado,
-                fechaPedido: fechaPedidoFinal
+                fechaServicio: formatearFecha( pedido.fechaServicio ),
+                fechaPedido: formatearFecha( pedido.fechaServicio ),
+                estado: pedido.estado
             },
         });
     } else {
@@ -145,40 +133,45 @@ const getPedidos = async (req, res) => {
         })
 }
 
-// Lista de pedidos contratados (cliente, Recycler View)
+// Lista de servicios contratados (Cliente, Recycler View)
 const getPedidosCliente = async (req, res) => {
-    const pedidosCliente = await PedidosModelo.find({ cliente: req.params.idCliente }).populate('servicio');
-
+    const pedidosCliente = await PedidosModelo.find({ cliente: req.params.idCliente })
+        .populate({
+            path: 'servicio',
+            populate: { path: 'prestadorDeServicio' }
+        })
+    
     if (pedidosCliente.length) {
-        let serviciosContratados = [];
+        
+        const serviciosContratados = pedidosCliente.map(pedido => {
+            let servicioContratado = {};
 
-        await Promise.all( pedidosCliente.map(async pedido => {
+            servicioContratado._id = pedido._id;
+            servicioContratado.servicio = {
+                _id: pedido.servicio._id,
+                titulo: pedido.servicio.titulo,
+                descripcion: pedido.servicio.descripcion,
+                precio: pedido.servicio.precio,
+                imagen: pedido.servicio.imagen,
+                prestadorDeServicio: {
+                    _id: pedido.servicio.prestadorDeServicio._id,
+                    nombre: pedido.servicio.prestadorDeServicio.nombre,
+                    profesion: pedido.servicio.prestadorDeServicio.profesion,
+                    imagen: pedido.servicio.prestadorDeServicio.imagen
+                }
+            }
+            servicioContratado.fechaServicio = formatearFecha( pedido.fechaServicio );
+            servicioContratado.fechaPedido = formatearFecha( pedido.fechaPedido );
+            servicioContratado.estado = pedido.estado;
 
-            // Fecha en que se realizara el servicio
-            const fechaServicio = pedido.fechaServicio.toString().split(' ');
-            const mesServicio = meses[ pedido.fechaServicio.getMonth() ];
-            const horaServicio = fechaServicio[4].split(':');
-            const fechaServicioFinal = `${fechaServicio[2]} ${mesServicio.slice(0, 3)} ${fechaServicio[3]}, ${horaServicio[0]}:${horaServicio[1]} hrs`;
-
-            // Fecha en que se realizo el pedido
-            const fechaPedido = pedido.fechaPedido.toString().split(' ');
-            const mesPedido = meses[ pedido.fechaPedido.getMonth() ];
-            const horaPedido = fechaPedido[4].split(':');
-            const fechaPedidoFinal = `${fechaPedido[2]} ${mesPedido.slice(0, 3)} ${fechaPedido[3]}, ${horaPedido[0]}:${horaPedido[1]} hrs`;
-
-            serviciosContratados.push({
-                _id: pedido._id,
-                servicio: await pedido.servicio.populate('prestadorDeServicio'),
-                fechaServicio: fechaServicioFinal,
-                fechaPedido: fechaPedidoFinal,
-                estado: pedido.estado
-            });
-        }) );
+            return servicioContratado;
+        });
 
         res.status(200).json({
             code: 200,
-            serviciosContratados: serviciosContratados
-        });
+            servicios_contratados: serviciosContratados
+        })
+
     } else {
         res.status(404).json({
             code: 404,
@@ -187,9 +180,140 @@ const getPedidosCliente = async (req, res) => {
     }
 }
 
+// Lista de servicios prestados (Prestador, Recycler View)
+const getPedidosPrestador = async (req, res) => {
+    const pedidosPrestador = await PedidosModelo.find()
+        .populate({
+            path: 'servicio',
+            match: { prestadorDeServicio: req.params.idPrestador }
+        }).populate('cliente');
+
+    if (pedidosPrestador.length) {
+        
+        const serviciosPrestados = pedidosPrestador.map(pedido => {
+            let servicioPrestado = {};
+            let direccionCliente = `${pedido.cliente.direccion.calle} #${pedido.cliente.direccion.numero}, ${pedido.cliente.direccion.municipio}`;
+
+            servicioPrestado._id = pedido._id;
+            servicioPrestado.servicio = pedido.servicio;
+            servicioPrestado.cliente = {
+                _id: pedido.cliente._id,
+                nombre: pedido.cliente.nombre,
+                direccion: direccionCliente,
+                imagen: pedido.cliente.imagen
+            };
+            servicioPrestado.fechaServicio = formatearFecha( pedido.fechaServicio );
+            servicioPrestado.fechaPedido = formatearFecha( pedido.fechaPedido );
+            servicioPrestado.estado = pedido.estado;
+
+            return servicioPrestado;
+        });
+
+        res.status(200).json({
+            code: 200,
+            servicios_prestados: serviciosPrestados
+        })
+
+    } else {
+        res.status(404).json({
+            code: 404,
+            message: 'Aún no tienes servicios vendidos'
+        });
+    }
+}
+
+// Actualizar pedido (estado del pedido)
+const updateEstadoPedido = async (req, res) => {
+    const { estado } = await PedidosModelo.findById(req.params.idPedido).exec();
+    let pedidoDatosActualizar = {};
+
+    if (estado != estadoServicio.finalizado && estado != estadoServicio.rechazado && estado != estadoServicio.cancelado) {
+
+        /**
+         * Valores para Estado
+         * 
+         * @typedef {object} req.body
+         * @property {string} req.body.estado Estados: 'cancelado', 'rechazado', 'en_proceso', 'finalizado'
+         */
+        switch( req.body.estado ) {
+            case 'en_proceso':
+                pedidoDatosActualizar.estado = estadoServicio.enProceso;
+                break;
+            
+            case 'finalizado':
+                pedidoDatosActualizar.estado = estadoServicio.finalizado;
+                break;
+
+            case 'cancelado':
+                pedidoDatosActualizar.estado = estadoServicio.cancelado;
+                break;
+
+            case 'rechazado':
+                pedidoDatosActualizar.estado = estadoServicio.rechazado;
+                break;
+            
+            default:
+                res.status(400).json({
+                    code: 400,
+                    message: 'Acción no permitida'
+                });
+                break;
+        }
+
+        // Actualizar estado
+        await PedidosModelo.findOneAndUpdate({ _id: req.params.idPedido }, pedidoDatosActualizar, { new: true })
+            .then(pedido => {
+                res.status(200).json({
+                    code: 200,
+                    message: 'Estado actualizado correctamente',
+                    pedido: pedido
+                });
+            })
+            .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
+
+    } else {
+        res.status(400).json({
+            code: 400,
+            message: 'Acción no permitida'
+        });
+    }
+}
+
+const updateFechaPedido = async (req, res) => {
+    const { estado } = await PedidosModelo.findById(req.params.idPedido).exec();
+    // Recibe la fecha como String: YYYY/MM/DD HH:MM:SS
+    const fechaServicio = new Date(req.body.fechaServicio);
+
+    const pedidoDatosActualizar = {
+        fechaServicio: fechaServicio
+    };
+
+    if (estado != estadoServicio.finalizado && estado != estadoServicio.rechazado && estado != estadoServicio.cancelado) {
+
+        await PedidosModelo.findOneAndUpdate({ _id: req.params.idPedido }, pedidoDatosActualizar, { new: true })
+            .then(pedido => {
+                res.status(200).json({
+                    code: 200,
+                    message: 'Fecha actualizada correctamente',
+                    pedido: pedido
+                });
+            })
+            .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
+
+    } else {
+        res.status(400).json({
+            code: 400,
+            message: 'Acción no permitida'
+        });
+    }
+}
+
 module.exports = {
     addPedido,
     getPedidos,
     getPedido,
-    getPedidosCliente
+    getPedidosCliente,
+    getPedidosPrestador,
+    updateEstadoPedido,
+    updateFechaPedido
 }

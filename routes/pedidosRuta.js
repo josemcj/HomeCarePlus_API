@@ -11,7 +11,16 @@ router.get('/pedidos', pedidosControl.getPedidos);
 // Obtener un pedido
 router.get('/pedido/:idPedido', pedidosControl.getPedido);
 
-// Servicios contratados (cliente, Recycler View)
+// Servicios contratados (Cliente, Recycler View)
 router.get('/cliente/:idCliente/pedidos', pedidosControl.getPedidosCliente);
+
+// Servicios prestados (Prestador, Recycler View)
+router.get('/prestador/:idPrestador/pedidos', pedidosControl.getPedidosPrestador);
+
+// Actualizar estado del pedido
+router.patch('/pedido/:idPedido/editar', pedidosControl.updateEstadoPedido);
+
+// Actualizar la fecha del pedido
+router.patch('/pedido/:idPedido/editar/fecha', pedidosControl.updateFechaPedido);
 
 module.exports = router;
