@@ -26,15 +26,15 @@ URL Vercel: https://homecareplus.vercel.app
 
 <h3>Pedidos (servicios contratados/prestados)</h3>
 
-- <b>/api/cliente/:idCliente/solicitar/:idServicio</b> (POST): Solicitar un servicio. Recibe por la URL el ID del cliente (:idCliente) y el ID del servicio a contratar (:idServicio). Por <em>body</em> recibe solo la fecha y hora (string) en que se realizará el servicio, con formato <u>YYYY/MM/DD HH:MM:SS</u>. El nombre de dicho parámetro es <u>fechaServicio</u>.
-- <b>/api/pedido/:idPedido</b> (GET): Muestra la información completa de un pedido. Funciona tanto para clientes como para prestadores de servicios. <u>La información estará en una Activity</u>.
-- <b>/api/cliente/:idCliente/pedidos</b> (GET): Lista todos los servicios contratados de un cliente dado por su ID (:idCliente). <u>Esta información se mostrará en un Recycler View</u>.
-- <b>/api/prestador/:idPrestador/pedidos</b> (GET): Lista todos los servicios prestador de un prestador de servicios dado por su ID (:idPrestador). <u>Esta información se mostrará en un Recycler View</u>.
-- <b>/api/pedido/:idPedido/editar</b> (PATCH): Actualiza el <b><u>estado</u></b> de un servicio. Estados disponibles: 'cancelado', 'rechazado', 'en_proceso', 'finalizado'. Por <em>body</em> recibe el parámetro <u>estado</u>.
-- <b>/api/pedido/:idPedido/editar/fecha</b> (PATCH): Actualiza la fecha en que se dará un servicio, dado por su ID (:idPedido). Por <em>body</em> recibe el parámetro <u>fechaServicio</u>, con la fecha y hora (string) en que se realizará el servicio, con formato <u>YYYY/MM/DD HH:MM:SS</u>.
-- <b>/api/pedidos</b> (GET): Obtiene todos los pedidos.<u>Solo para proceso de desarrollo</u>.
+- <b>/api/cliente/:idCliente/solicitar/:idServicio</b> (POST): Solicitar un servicio. Recibe por la URL el ID del cliente (:idCliente) y el ID del servicio a contratar (:idServicio). Por <em>body</em> recibe solo la fecha y hora (string) en que se realizará el servicio, con formato **_YYYY/MM/DD HH:MM:SS_**. El nombre de dicho parámetro es **_fechaServicio_**.
+- <b>/api/pedido/:idPedido</b> (GET): Muestra la información completa de un pedido. Funciona tanto para clientes como para prestadores de servicios. **_La información estará en una Activity_**.
+- <b>/api/cliente/:idCliente/pedidos</b> (GET): Lista todos los servicios contratados de un cliente dado por su ID (:idCliente). **_Esta información se mostrará en un Recycler View_**.
+- <b>/api/prestador/:idPrestador/pedidos</b> (GET): Lista todos los servicios prestador de un prestador de servicios dado por su ID (:idPrestador). **_Esta información se mostrará en un Recycler View_**.
+- <b>/api/pedido/:idPedido/editar</b> (PATCH): Actualiza el <b>**_estado_**</b> de un servicio. Estados disponibles: 'cancelado', 'rechazado', 'en_proceso', 'finalizado'. Por <em>body</em> recibe el parámetro **_estado_**.
+- <b>/api/pedido/:idPedido/editar/fecha</b> (PATCH): Actualiza la fecha en que se dará un servicio, dado por su ID (:idPedido). Por <em>body</em> recibe el parámetro **_fechaServicio_**, con la fecha y hora (string) en que se realizará el servicio, con formato **_YYYY/MM/DD HH:MM:SS_**.
+- <b>/api/pedidos</b> (GET): Obtiene todos los pedidos.**_Solo para proceso de desarrollo_**.
 
-<h2>Información sobre los estados de los pedidos</h2>
+#### Información sobre los estados de los pedidos
 - Solicitado: El cliente ha solicitado el servicio (default).
 - Cancelado: Servicio cancelado por el cliente.
 - Rechazado: Rechazado por el prestador de servicios.
