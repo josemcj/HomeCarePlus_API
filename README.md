@@ -1,6 +1,20 @@
 # Home Care Plus con MongoDB
 API REST con Express y MongoDB.
 
+## Configuración inicial del proyecto
+
+Para probar el proyecto local debes instalar Node.js y MongoDB. A continuación, debes seguir los siguientes pasos:
+
+1. Clona el repositorio.
+2. Accede a la carpeta **config*** y crea un archivo llamado `config.env`. Edita el archivo y coloca lo siguiente:
+```
+PORT = 3000
+MONGO_URI = mongodb://127.0.0.1:27017/homecare
+```
+3. Guarda el archivo.
+4. Situate en la carpeta raíz del proyecto y abre la terminal. Ejecuta el comando `npm i`.
+5. Finalmente, para iniciar el servidor web ejecuta el comando `npm run start`.
+
 ## Lista de URLs para consumir
 
 URL local: http://localhost:3000</br>
@@ -11,8 +25,8 @@ URL Vercel: https://homecareplus.vercel.app
 - `/api/registrar-usuario` (POST): Registrar un usuario. Funciona tanto para clientes como para prestadores de servicios. Por **body** recibe los campos:
     - `nombre`
     - `telefono`
-    - `sexo` Femenino: 1, Masculino: 2
-    - `tipoUsuario` Cliente: 1, Prestador: 2
+    - `sexo`: Femenino: 1, Masculino: 2
+    - `tipoUsuario`: Cliente: 1, Prestador: 2
     - `imagen` (en base64)
     - `calle`
     - `numero`
@@ -28,7 +42,7 @@ Y en caso de ser prestador de servicios, el campo `profesion`.
 - `/api/usuario/:idUsuario/editar` (PATCH): Editar un usuario por su ID (sustituir **:idUsuario** por el ID correspondiente). Recibe los campos:
     - `nombre`
     - `telefono`
-    - `sexo` Femenino: 1, Masculino: 2
+    - `sexo`: Femenino: 1, Masculino: 2
     - `imagen` (en base64)
     - `calle`
     - `numero`
@@ -45,7 +59,10 @@ Y en caso de ser prestador de servicios, el campo `profesion`. **NOTA: No actual
 - `/api/prestador/:idPrestador/registrar-servicio` (POST): Registrar un servicio usando el ID de un prestador de servicios (sustituir **:idPrestador** por el ID correspondiente). Recibe los campos:
     - `titulo`
     - `descripcion`
-    - `categoria`
+    - `categoria`: Recibe en string alguno de los siguientes valores:
+        - `Niños`: Servicios para niños.
+        - `Adultos`: Servicios para adultos mayores.
+        - `General`: Servicios para el público en general.
     - `imagen` (en base64)
     - `precio`
 - `/api/prestador/:idPrestador/servicios` (GET): Listar los servicios publicados por un determinado prestador de servicios, dado por su ID (sustituir **:idPrestador** por el ID correspondiente).
@@ -54,7 +71,10 @@ Y en caso de ser prestador de servicios, el campo `profesion`. **NOTA: No actual
 - `/api/servicio/:idServicio/editar` (PATCH): Editar un servicio dado por su ID (sustituir **:idServicio** por el ID correspondiente). Recibe los campos: 
     - `titulo`
     - `descripcion`
-    - `categoria`
+    - `categoria`Recibe en string alguno de los siguientes valores:
+        - `Niños`: Servicios para niños.
+        - `Adultos`: Servicios para adultos mayores.
+        - `General`: Servicios para el público en general.
     - `imagen` (en base64)
     - `precio`
 - `/api/prestador/:idPrestador/servicio/:idServicio/eliminar` (DELETE): Elimina un servicio dado por su ID (sustituir **:idPrestador** y **:idServicio** por el ID correspondiente al servicio y el prestador del mismo).
@@ -92,8 +112,8 @@ Y en caso de ser prestador de servicios, el campo `profesion`. **NOTA: No actual
     - `Adultos`
     - `General`
 
-**NOTA:** Las categorías deberán estar escritas tan cual se muestran arriba. Los parámetros en una petición GET se envían a través de la URL y tiene la forma: _?KEY=VALUE_, es decir, la URL de búsqueda para niños quedaría de la forma:
+**NOTA:** Las categorías deberán estar escritas tan cual fueron registradas en la base de datos para encontrar resultados. Los parámetros en una petición GET se envían a través de la URL y tienen la forma: _?KEY=VALUE_, es decir, la URL de búsqueda para niños quedaría de la forma:
 ```
 .../api/buscar?cat=Niños
 ```
-Estos parámetros se pueden enviar con Volley sin necesidad de añadirlos a la URL como en el bloque anterior, solo es de referencia.
+Estos parámetros se pueden enviar con Volley sin necesidad de añadirlos a la URL como en el bloque anterior, esto solo es de referencia.
