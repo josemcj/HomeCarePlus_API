@@ -35,6 +35,7 @@ const prestadorSchema = new Schema({
         comentarios: [
             {
                 comentario: String,
+                calificacion: Number,
                 cliente: {
                     type: Schema.ObjectId,
                     ref: 'UsuariosModelo'

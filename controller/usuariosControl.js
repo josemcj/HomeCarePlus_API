@@ -257,8 +257,9 @@ const updateCalificacionPrestador = async (req, res) => {
     // Validar si existe un comentario
     if (req.body.comentario) {
         prestador.calificacion.comentarios.push({
-            cliente: cliente,
-            comentario: req.body.comentario
+            comentario: req.body.comentario,
+            calificacion: calificacionDada,
+            cliente: cliente
         });
     }
 
