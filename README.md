@@ -6,7 +6,7 @@ API REST con Express y MongoDB.
 Para probar el proyecto local debes instalar Node.js y MongoDB. A continuación, debes seguir los siguientes pasos:
 
 1. Clona el repositorio.
-2. Accede a la carpeta **config*** y crea un archivo llamado `config.env`. Edita el archivo y coloca lo siguiente:
+2. Accede a la carpeta **config** y crea un archivo llamado `config.env`. Edita el archivo y coloca lo siguiente:
 ```
 PORT = 3000
 MONGO_URI = mongodb://127.0.0.1:27017/homecare
