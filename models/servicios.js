@@ -15,6 +15,10 @@ const servicioSchema = new Schema({
         required: true,
         default: 'default_service.jpg'
     },
+    categoria: {
+        type: String,
+        required: true
+    },
     precio: {
         type: Number,
         required: true

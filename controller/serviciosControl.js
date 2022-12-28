@@ -10,6 +10,7 @@ const addServicio = async (req, res) => {
     let servicio = new ServiciosModelo({
         titulo: req.body.titulo,
         descripcion: req.body.descripcion,
+        categoria: req.body.categoria,
         precio: req.body.precio
     });
 
@@ -134,6 +135,7 @@ const updateServicio = async (req, res) => {
     const servicioDatosActualizar = {
         titulo: req.body.titulo,
         descripcion: req.body.descripcion,
+        categoria: req.body.categoria,
         imagen: imagenNueva,
         precio: req.body.precio
     }
@@ -180,11 +182,32 @@ const deleteServicio = async (req, res) => {
     await prestador.save();
 }
 
+/**
+ * Buscar servicios por categoria
+ */
+const searchServicios = async (req, res) => {
+    const categoria = req.query.cat;
+    const servicios = await ServiciosModelo.find({ categoria: categoria }).exec();
+    
+    if (servicios.length) {
+        res.status(200).json({
+            code: 200,
+            servicios: servicios
+        });
+    } else {
+        res.status(404).json({
+            code: 404,
+            message: 'Sin resultados'
+        });
+    }
+}
+
 module.exports = {
     addServicio,
     getServicios,
     getServicio,
     getServiciosDePrestador,
     updateServicio,
-    deleteServicio
+    deleteServicio,
+    searchServicios
 }

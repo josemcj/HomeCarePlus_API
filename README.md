@@ -20,6 +20,7 @@ URL Vercel: https://homecareplus.vercel.app
 - **/api/prestador/:idPrestador/registrar-servicio** (POST): Registrar un servicio usando el ID de un prestador de servicios (sustituir _:idPrestador_ por el ID correspondiente). Recibe los campos:
     - titulo
     - descripcion
+    - categoria
     - imagen (en base64)
     - precio
 - **/api/prestador/:idPrestador/servicios** (GET): Listar los servicios publicados por un determinado prestador de servicios, dado por su ID (sustituir _:idPrestador_ por el ID correspondiente).
@@ -28,6 +29,7 @@ URL Vercel: https://homecareplus.vercel.app
 - **/api/servicio/:idServicio/editar** (PATCH): Editar un servicio dado por su ID (sustituir _:idServicio_ por el ID correspondiente). Recibe los campos: 
     - titulo
     - descripcion
+    - categoria
     - imagen (en base64)
     - precio
 - **/api/prestador/:idPrestador/servicio/:idServicio/eliminar** (DELETE): Elimina un servicio dado por su ID (sustituir _:idPrestador_ y _:idServicio_ por el ID correspondiente al servicio y el prestador del mismo).
@@ -58,3 +60,15 @@ URL Vercel: https://homecareplus.vercel.app
 - **/api/cliente/:idCliente/calificar/:idPrestador** (PATCH): A través de la URL recibe el ID del cliente (:idCliente) y el ID del prestador a calificar (:idPrestador). Recibe a través del **body** los parámetros:
     - **calificacion**: Un número entero del 1 al 5.
     - **comentario** (opcional): Una cadena de texto con el comentario dirigido al prestador.
+
+### Buscar servicios
+- **/api/buscar** (GET): Buscar servicios dados por su categoría. Se le envía el parámetro **cat**, con alguno de los siguientes valores (string):
+    - Niños
+    - Adultos
+    - General
+
+**NOTA:** Las categorías deberán estar escritas tan cual se muestran arriba. Los parámetros en una petición GET se envían a través de la URL tienes la forma: _?KEY=VALUE_, es decir, la URL de búsqueda para niños quedaría de la forma:
+```
+.../api/buscar?cat=Niños
+```
+Estos parámetros se pueden enviar con Volley sin necesidad de añadirlos a la URL como en el bloque anterior, solo es de referencia.

@@ -21,4 +21,9 @@ router.patch('/servicio/:idServicio/editar', serviciosControl.updateServicio);
 // Eliminar servicio
 router.delete('/prestador/:idPrestador/servicio/:idServicio/eliminar', serviciosControl.deleteServicio);
 
+/**
+ * Buscar servicios por categoria
+ */
+router.get('/buscar', serviciosControl.searchServicios);
+
 module.exports = router;
