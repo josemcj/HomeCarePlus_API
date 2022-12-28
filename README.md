@@ -67,7 +67,7 @@ URL Vercel: https://homecareplus.vercel.app
     - Adultos
     - General
 
-**NOTA:** Las categorías deberán estar escritas tan cual se muestran arriba. Los parámetros en una petición GET se envían a través de la URL tienes la forma: _?KEY=VALUE_, es decir, la URL de búsqueda para niños quedaría de la forma:
+**NOTA:** Las categorías deberán estar escritas tan cual se muestran arriba. Los parámetros en una petición GET se envían a través de la URL y tiene la forma: _?KEY=VALUE_, es decir, la URL de búsqueda para niños quedaría de la forma:
 ```
 .../api/buscar?cat=Niños
 ```
