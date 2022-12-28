@@ -88,9 +88,9 @@ Y en caso de ser prestador de servicios, el campo `profesion`. **NOTA: No actual
 
 ### Buscar servicios
 - `/api/buscar` (GET): Buscar servicios dados por su categoría. Se le envía el parámetro `cat`, con alguno de los siguientes valores (string):
-    - Niños
-    - Adultos
-    - General
+    - `Niños`
+    - `Adultos`
+    - `General`
 
 **NOTA:** Las categorías deberán estar escritas tan cual se muestran arriba. Los parámetros en una petición GET se envían a través de la URL y tiene la forma: _?KEY=VALUE_, es decir, la URL de búsqueda para niños quedaría de la forma:
 ```
