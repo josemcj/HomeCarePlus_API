@@ -97,7 +97,7 @@ const getPedido = async (req, res) => {
                     imagen: prestador.imagen
                 },
                 fechaServicio: formatearFecha( pedido.fechaServicio ),
-                fechaPedido: formatearFecha( pedido.fechaServicio ),
+                fechaPedido: formatearFecha( pedido.fechaPedido ),
                 estado: pedido.estado
             },
         });
