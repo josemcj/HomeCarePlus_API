@@ -237,11 +237,48 @@ const deleteUsuario = async (req, res) => {
     });
 }
 
+/**
+ * Calificaciones de los clientes a los prestadores
+ */
+const updateCalificacionPrestador = async (req, res) => {
+    const prestador = await UsuariosModelo.findById(req.params.idPrestador).exec();
+    const cliente = await UsuariosModelo.findById(req.params.idCliente).exec();
+
+    const calificacionDada = parseInt( req.body.calificacion );
+    const nuevoNumPersonas = prestador.calificacion.numPersonas + 1;
+    const nuevoPuntosTotales = prestador.calificacion.puntosTotales + calificacionDada;
+    const nuevoPromedio = nuevoPuntosTotales / nuevoNumPersonas;
+
+    // Intertar datos a actualizar
+    prestador.calificacion.promedio = nuevoPromedio;
+    prestador.calificacion.puntosTotales = nuevoPuntosTotales;
+    prestador.calificacion.numPersonas = nuevoNumPersonas;
+
+    // Validar si existe un comentario
+    if (req.body.comentario) {
+        prestador.calificacion.comentarios.push({
+            cliente: cliente,
+            comentario: req.body.comentario
+        });
+    }
+
+    prestador.save()
+        .then(() => {
+            res.status(200).json({
+                code: 200,
+                message: 'Gracias por tus comentarios'
+            });
+        })
+        .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
+    
+}
+
 module.exports = {
     addUsuario,
     login,
     getUsuarios,
     getUsuario,
     updateUsuario,
-    deleteUsuario
+    deleteUsuario,
+    updateCalificacionPrestador
 }

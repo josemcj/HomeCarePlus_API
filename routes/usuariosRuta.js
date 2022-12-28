@@ -19,4 +19,9 @@ router.patch('/usuario/:idUsuario/editar', usuariosControl.updateUsuario);
 // Eliminar usuario por su ID
 router.delete('/usuario/:idUsuario/eliminar', usuariosControl.deleteUsuario);
 
+/**
+ * Calificaciones de los clientes a los prestadores
+ */
+router.patch('/cliente/:idCliente/calificar/:idPrestador', usuariosControl.updateCalificacionPrestador);
+
 module.exports = router;
