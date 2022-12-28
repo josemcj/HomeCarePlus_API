@@ -10,7 +10,7 @@ URL Vercel: https://homecareplus.vercel.app
 
 - **/api/registrar-usuario** (POST): Registrar un usuario. Funciona tanto para clientes como para prestadores de servicios. Por **body** recibe los campos:
     - `nombre`
-    . `telefono`
+    - `telefono`
     - `sexo` Femenino: 1, Masculino: 2
     - `tipoUsuario` Cliente: 1, Prestador: 2
     - `imagen` (en base64)
@@ -20,13 +20,14 @@ URL Vercel: https://homecareplus.vercel.app
     - `colonia`
     - `municipio`
     - `estado`
+
 Y en caso de ser prestador de servicios, el campo `profesion`.
 - **/api/login** (POST): Iniciar sesión. Funciona tanto para clientes como para prestadores de servicios.
 - **/api/usuarios** (GET): Listar todos los usuarios (prestadores y clientes).
 - **/api/usuario/:idUsuario** (GET): Obtener un usuario por su ID (sustituir `:idUsuario` por el ID correspondiente).
 - **/api/usuario/:idUsuario/editar** (PATCH): Editar un usuario por su ID (sustituir `:idUsuario` por el ID correspondiente). Recibe los campos:
     - `nombre`
-    . `telefono`
+    - `telefono`
     - `sexo` Femenino: 1, Masculino: 2
     - `imagen` (en base64)
     - `calle`
@@ -35,6 +36,7 @@ Y en caso de ser prestador de servicios, el campo `profesion`.
     - `colonia`
     - `municipio`
     - `estado`
+
 Y en caso de ser prestador de servicios, el campo `profesion`. **NOTA: No actualiza email ni contraseña.**
 - **/api/usuario/:idUsuario/eliminar** (DELETE): Eliminar un suario por su ID (sustituir `:idUsuario` por el ID correspondiente).
 
