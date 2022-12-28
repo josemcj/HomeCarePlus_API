@@ -32,7 +32,7 @@ URL Vercel: https://homecareplus.vercel.app
 - <b>/api/prestador/:idPrestador/pedidos</b> (GET): Lista todos los servicios prestador de un prestador de servicios dado por su ID (:idPrestador). **_Esta información se mostrará en un Recycler View_**.
 - <b>/api/pedido/:idPedido/editar</b> (PATCH): Actualiza el <b>**_estado_**</b> de un servicio. Estados disponibles: 'cancelado', 'rechazado', 'en_proceso', 'finalizado'. Por <em>body</em> recibe el parámetro **_estado_**.
 - <b>/api/pedido/:idPedido/editar/fecha</b> (PATCH): Actualiza la fecha en que se dará un servicio, dado por su ID (:idPedido). Por <em>body</em> recibe el parámetro **_fechaServicio_**, con la fecha y hora (string) en que se realizará el servicio, con formato **_YYYY/MM/DD HH:MM:SS_**.
-- <b>/api/pedidos</b> (GET): Obtiene todos los pedidos.**_Solo para proceso de desarrollo_**.
+- <b>/api/pedidos</b> (GET): Obtiene todos los pedidos.**_ Solo para proceso de desarrollo_**.
 
 #### Información sobre los estados de los pedidos
 - Solicitado: El cliente ha solicitado el servicio (default).
@@ -40,3 +40,9 @@ URL Vercel: https://homecareplus.vercel.app
 - Rechazado: Rechazado por el prestador de servicios.
 - En proceso: El servicio esta siendo proporcionado en este momento.
 - Finalizado: El servicio ha sido completado.
+
+<h3>Asignar calificación del prestador</h3>
+
+- **/api/cliente/:idCliente/calificar/:idPrestador** (PATCH): A través de la URL recibe el ID del cliente (:idCliente) y el ID del prestador a calificar (:idPrestador). Recibe a través del **body** los parámetros:
+    - **calificacion**: Un número entero del 1 al 5.
+    - **comentario** (opcional): Una cadena de texto con el comentario dirigido al prestador.
