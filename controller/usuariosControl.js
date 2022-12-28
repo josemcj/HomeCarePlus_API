@@ -12,7 +12,7 @@ const addUsuario = async (req, res) => {
     if (!user.length) {
 
         /**
-         * @typedef {Object} usuario
+         * @typedef {object} usuario
          * @property {string} usuario.tipoUsuario Cliente: 1, Prestador: 2
          * @property {string} usuario.sexo Femenino: 1, Masculino: 2
          */
