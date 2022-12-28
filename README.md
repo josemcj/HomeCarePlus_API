@@ -70,8 +70,8 @@ Y en caso de ser prestador de servicios, el campo `profesion`. **NOTA: No actual
     - `rechazado`
     - `en_proceso`
     - `finalizado`
-- `/api/pedido/:idPedido/editar/fecha` (PATCH): Actualiza la fecha en que se proporcionará un servicio, dado por su ID (`:idPedido`). Por **body** recibe el parámetro `fechaServicio`, con la fecha y hora (string) en que se realizará el servicio, con formato `YYYY/MM/DD HH:MM:SS`.
-- `/api/pedidos** (GET): Obtiene todos los pedidos. **_Solo para proceso de desarrollo_**.
+- `/api/pedido/:idPedido/editar/fecha` (PATCH): Actualiza la fecha en que se proporcionará un servicio, dado por su ID (**:idPedido**). Por **body** recibe el parámetro `fechaServicio`, con la fecha y hora (string) en que se realizará el servicio, con formato `YYYY/MM/DD HH:MM:SS`.
+- `/api/pedidos` (GET): Obtiene todos los pedidos. **_Solo para proceso de desarrollo_**.
 
 #### Información sobre los estados de los pedidos
 - Solicitado: El cliente ha solicitado el servicio (default).
@@ -82,7 +82,7 @@ Y en caso de ser prestador de servicios, el campo `profesion`. **NOTA: No actual
 
 ### Asignar calificación del prestador
 
-- `/api/cliente/:idCliente/calificar/:idPrestador` (PATCH): A través de la URL recibe el ID del cliente (`:idCliente`) y el ID del prestador a calificar (**:idPrestador**). Recibe a través del **body** los parámetros:
+- `/api/cliente/:idCliente/calificar/:idPrestador` (PATCH): A través de la URL recibe el ID del cliente (**:idCliente**) y el ID del prestador a calificar (**:idPrestador**). Recibe a través del **body** los parámetros:
     - `calificacion`: Un número entero del 1 al 5.
     - `comentario` (opcional): Una cadena de texto con el comentario dirigido al prestador.
 
