@@ -87,7 +87,7 @@ Y en caso de ser prestador de servicios, el campo `profesion`. **NOTA: No actual
     - `comentario` (opcional): Una cadena de texto con el comentario dirigido al prestador.
 
 ### Buscar servicios
-- **/api/buscar** (GET): Buscar servicios dados por su categoría. Se le envía el parámetro `cat`, con alguno de los siguientes valores (string):
+- `/api/buscar` (GET): Buscar servicios dados por su categoría. Se le envía el parámetro `cat`, con alguno de los siguientes valores (string):
     - Niños
     - Adultos
     - General
