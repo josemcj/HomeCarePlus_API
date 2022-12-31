@@ -24,4 +24,9 @@ router.delete('/usuario/:idUsuario/eliminar', usuariosControl.deleteUsuario);
  */
 router.patch('/cliente/:idCliente/calificar/:idPrestador', usuariosControl.updateCalificacionPrestador);
 
+/**
+ * Validacion de usuarios prestadores
+ */
+router.patch('/prestador/:idPrestador/validar', usuariosControl.cambiarValidacion);
+
 module.exports = router;

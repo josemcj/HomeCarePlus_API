@@ -274,6 +274,31 @@ const updateCalificacionPrestador = async (req, res) => {
     
 }
 
+/**
+ * Cambiar estado de Validado
+ */
+const cambiarValidacion = async (req, res) => {
+    const prestador = await UsuariosModelo.findById(req.params.idPrestador).exec();
+
+    if (prestador.tipoUsuario == 2) {
+        prestador.validado = true;
+
+        prestador.save()
+            .then(() => {
+                res.status(200).json({
+                    code: 200,
+                    message: 'Usuario validado correctamente'
+                });
+            })
+            .catch( err => res.status(500).json({ code: 500, message: 'Ha ocurrido un error' }) );
+    } else {
+        res.status(400).json({
+            code: 400,
+            message: 'Acción no permitida'
+        });
+    }
+}
+
 module.exports = {
     addUsuario,
     login,
@@ -281,5 +306,6 @@ module.exports = {
     getUsuario,
     updateUsuario,
     deleteUsuario,
-    updateCalificacionPrestador
+    updateCalificacionPrestador,
+    cambiarValidacion
 }

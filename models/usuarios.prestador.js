@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const prestadorSchema = new Schema({
+    validado: {
+        type: Boolean,
+        default: false
+    },
     profesion: {
         type: String,
         required: true
