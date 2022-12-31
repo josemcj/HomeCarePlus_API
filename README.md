@@ -117,3 +117,7 @@ Y en caso de ser prestador de servicios, el campo `profesion`. **NOTA: No actual
 .../api/buscar?cat=Niños
 ```
 Estos parámetros se pueden enviar con Volley sin necesidad de añadirlos a la URL como en el bloque anterior, esto solo es de referencia.
+
+### Validar prestadores de servicios
+
+- `/api/prestador/:idPrestador/validar` (PATCH): Cambia el campo 'validado' de false (valor por defecto al registrar un usuario prestador) a true. No recibe ningún parámetro.
