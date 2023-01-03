@@ -185,11 +185,13 @@ const getPedidosPrestador = async (req, res) => {
     const pedidosPrestador = await PedidosModelo.find()
         .populate({
             path: 'servicio',
-            match: { prestadorDeServicio: req.params.idPrestador }
-        }).populate('cliente');
+            match: { 'servicio.prestadorDeServicio': req.params.idPrestador }
+        })
+        .populate('cliente')
+        .exec();
 
     if (pedidosPrestador.length) {
-        
+
         const serviciosPrestados = pedidosPrestador.map(pedido => {
             let servicioPrestado = {};
             let direccionCliente = `${pedido.cliente.direccion.calle} #${pedido.cliente.direccion.numero}, ${pedido.cliente.direccion.municipio}`;
