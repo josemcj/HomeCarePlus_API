@@ -24,6 +24,9 @@ router.delete('/usuario/:idUsuario/eliminar', usuariosControl.deleteUsuario);
  */
 router.patch('/cliente/:idCliente/calificar/:idPrestador', usuariosControl.updateCalificacionPrestador);
 
+// Obtener las reviews de los prestadores
+router.get('/prestador/:idPrestador', usuariosControl.reviewsPrestador);
+
 /**
  * Validacion de usuarios prestadores
  */

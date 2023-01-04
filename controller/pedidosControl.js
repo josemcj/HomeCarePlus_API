@@ -2,6 +2,7 @@ const { ServiciosModelo } = require('../models/servicios');
 const UsuariosModelo = require('../models/usuarios');
 const PedidosModelo = require('../models/pedidos');
 const formatearFecha = require('../helpers/formatearFecha');
+const stripe = require('stripe')(process.env.STRIPE_SK);
 
 /**
  * Almacena los diferentes estados que los servicios pueden tener
@@ -22,6 +23,45 @@ const estadoServicio = {
     rechazado: 'Rechazado',
     enProceso: 'En proceso',
     finalizado: 'Finalizado'
+}
+
+const createPayment = async (req, res) => {
+    // Obtener los datos
+    const servicio = await ServiciosModelo.findById(req.params.idServicio).exec();
+    const cliente = await UsuariosModelo.findById(req.params.idCliente).exec();
+    const precio = servicio.precio * 100;
+
+    const customer = await stripe.customers.create({
+        name: cliente.nombre,
+        address: {
+            line1: `${cliente.direccion.calle} #${cliente.direccion.numero}`,
+            postal_code: cliente.direccion.cp,
+            city: cliente.direccion.municipio,
+            state: cliente.direccion.estado,
+            country: 'MX'
+        }
+    });
+    const ephemeralKey = await stripe.ephemeralKeys.create(
+        { customer: customer.id },
+        { apiVersion: '2022-11-15' }
+    );
+
+    const paymentIntent = await stripe.paymentIntents.create({
+        amount: precio,
+        currency: 'mxn',
+        description: `Home Care Plus - ${servicio.titulo}`,
+        customer: customer.id,
+        automatic_payment_methods: {
+            enabled: true,
+        },
+    });
+
+    res.status(200).json({
+        paymentIntent: paymentIntent.client_secret,
+        ephemeralKey: ephemeralKey.secret,
+        customer: customer.id,
+        publishableKey: process.env.STRIPE_PK
+    });
 }
 
 const addPedido = async (req, res) => {
@@ -311,6 +351,7 @@ const updateFechaPedido = async (req, res) => {
 }
 
 module.exports = {
+    createPayment,
     addPedido,
     getPedidos,
     getPedido,

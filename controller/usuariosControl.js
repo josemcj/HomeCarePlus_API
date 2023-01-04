@@ -4,6 +4,7 @@ const PrestadorModelo = require('../models/usuarios.prestador');
 const ClienteModelo = require('../models/usuarios.cliente');
 const eliminarImg = require('../helpers/eliminarImg');
 const uploadImage = require('../helpers/uploadImage');
+const formatearFecha = require('../helpers/formatearFecha');
 
 const addUsuario = async (req, res) => {
     const user = await UsuariosModelo.find({ email: req.body.email }).exec();
@@ -274,6 +275,37 @@ const updateCalificacionPrestador = async (req, res) => {
     
 }
 
+// Obtener las reviews de los prestadores
+const reviewsPrestador = async (req, res) => {
+    const prestador = await UsuariosModelo.findById(req.params.idPrestador).populate('calificacion.comentarios.cliente').exec();
+    const comentarios = prestador.calificacion.comentarios;
+
+    comentariosFormateado = comentarios.map(comentario => {
+        let comentarioObj = {};
+
+        comentarioObj.cliente = comentario.cliente.nombre;
+        comentarioObj.calificacion = comentario.calificacion;
+        comentarioObj.comentario = comentario.comentario;
+        comentarioObj.fecha = formatearFecha( comentario.fecha ).split(',')[0];
+
+        return comentarioObj;
+    });
+
+    res.status(200).json({
+        code: 200,
+        usuario_prestador: {
+            nombre: prestador.nombre,
+            imagen: prestador.imagen,
+            profesion: prestador.profesion,
+            calificacion: {
+                promedio: prestador.calificacion.promedio.toFixed(1),
+                evaluado_por: prestador.calificacion.numPersonas,
+                comentarios: comentariosFormateado
+            }
+        }
+    });
+}
+
 /**
  * Cambiar estado de Validado
  */
@@ -307,5 +339,6 @@ module.exports = {
     updateUsuario,
     deleteUsuario,
     updateCalificacionPrestador,
+    reviewsPrestador,
     cambiarValidacion
 }

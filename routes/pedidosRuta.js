@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const pedidosControl = require('../controller/pedidosControl');
 
+// Pagar pedido
+router.post('/cliente/:idCliente/pagar/:idServicio', pedidosControl.createPayment);
+
 // Realizar un pedido
 router.post('/cliente/:idCliente/solicitar/:idServicio', pedidosControl.addPedido);
 

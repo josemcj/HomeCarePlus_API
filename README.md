@@ -81,6 +81,7 @@ Y en caso de ser prestador de servicios, el campo `profesion`. **NOTA: No actual
 
 ### Pedidos (servicios contratados/prestados)
 
+- `/api/cliente/:idCliente/pagar/:idServicio` (POST): Pagar un servicio. Recibe por la URL el ID del cliente (:idCliente) que contratará el servicio y el ID de este (:idServicio). **No recibe parámetros por body**.
 - `/api/cliente/:idCliente/solicitar/:idServicio` (POST): Solicitar un servicio. Recibe por la URL el ID del cliente (:idCliente) y el ID del servicio a contratar (:idServicio). Por **body** recibe solo la fecha y hora (string) en que se realizará el servicio, con formato `YYYY/MM/DD HH:MM:SS`. El nombre de dicho parámetro es `fechaServicio`.
 - `/api/pedido/:idPedido` (GET): Muestra la información completa de un pedido. Funciona tanto para clientes como para prestadores de servicios. **_La información estará en una Activity_**.
 - `/api/cliente/:idCliente/pedidos` (GET): Lista todos los servicios contratados de un cliente dado por su ID (**:idCliente**). **_Esta información se mostrará en un Recycler View_**.
@@ -105,6 +106,8 @@ Y en caso de ser prestador de servicios, el campo `profesion`. **NOTA: No actual
 - `/api/cliente/:idCliente/calificar/:idPrestador` (PATCH): A través de la URL recibe el ID del cliente (**:idCliente**) y el ID del prestador a calificar (**:idPrestador**). Recibe a través del **body** los parámetros:
     - `calificacion`: Un número entero del 1 al 5.
     - `comentario` (opcional): Una cadena de texto con el comentario dirigido al prestador.
+
+- `/api/prestador/:idPrestador` (GET): Ver las reviews de un prestador de servicios, así como su información más general.
 
 ### Buscar servicios
 - `/api/buscar` (GET): Buscar servicios dados por su categoría. Se le envía el parámetro `cat`, con alguno de los siguientes valores (string):
