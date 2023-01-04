@@ -10,8 +10,8 @@ Para probar el proyecto local debes instalar Node.js y MongoDB. A continuación,
 ```
 PORT = 3000
 MONGO_URI = mongodb://127.0.0.1:27017/homecare
-STRIPE_SK = <PRIVATE KEY>
-STRIPE_PK = <PUBLIC KEY>
+STRIPE_SK = <SECRET_KEY>
+STRIPE_PK = <PUBLISHABLE_KEY>
 ```
 3. Guarda el archivo.
 4. Situate en la carpeta raíz del proyecto y abre la terminal. Ejecuta el comando `npm i`.
