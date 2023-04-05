@@ -117,12 +117,6 @@ Y en caso de ser prestador de servicios, el campo `profesion`. **NOTA: No actual
     - `Adultos`
     - `General`
 
-**NOTA:** Las categorías deberán estar escritas tan cual fueron registradas en la base de datos para encontrar resultados. Los parámetros en una petición GET se envían a través de la URL y tienen la forma: _?KEY=VALUE_, es decir, la URL de búsqueda para niños quedaría de la forma:
-```
-.../api/buscar?cat=Niños
-```
-Estos parámetros se pueden enviar con Volley sin necesidad de añadirlos a la URL como en el bloque anterior, esto solo es de referencia.
-
 ### Validar prestadores de servicios
 
 - `/api/prestador/:idPrestador/validar` (PATCH): Cambia el campo 'validado' de false (valor por defecto al registrar un usuario prestador) a true. No recibe ningún parámetro.
